@@ -1,7 +1,15 @@
-customer.index:
+customer.customer_index:
   path: '/customer_index'
   defaults:
-    _controller: '\Drupal\customer\Controller\CustomerController::index'
+    _controller: '\Drupal\customer\Controller\CustomerController::customer_index'
     _title: 'Customer Module'
+  requirements:
+    _permission: 'access content'
+
+customer.customer_form:
+  path: '/submit'
+  defaults:
+    _form: '\Drupal\customer\Form\CustomerForm'
+    _title: 'Submit a new customer'
   requirements:
     _permission: 'access content'

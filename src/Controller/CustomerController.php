@@ -7,7 +7,7 @@
      * Define the class for controller.
      */
     class CustomerController extends ControllerBase {
-        function index() {
+        function customer_index() {
             return array(
                 '#type' => 'markup',
                 '#markup' => $this->t('Customer module'),
