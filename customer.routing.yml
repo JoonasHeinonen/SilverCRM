@@ -1,0 +1,7 @@
+customer.index:
+  path: '/customer_index'
+  defaults:
+    _controller: '\Drupal\customer\Controller\CustomerController::index'
+    _title: 'Customer Module'
+  requirements:
+    _permission: 'access content'

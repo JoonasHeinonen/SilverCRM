@@ -1,0 +1,9 @@
+name: Customer Module
+description: 'Create and manage customer entities (nodes, data, etc.) in a CRM.'
+package: Silver CRM
+
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+# Dependencies will be defined later when/if use cases enable them.
