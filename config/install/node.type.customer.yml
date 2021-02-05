@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - customer
+name: 'Customer'
+type: customer
+description: 'Content type for describing and displaying <b>customers</b> in CRM.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: true
