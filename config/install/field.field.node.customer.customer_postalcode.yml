@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.customer_website
+    - field.storage.node.customer_postalcode
     - node.type.customer
   module:
     - field
-id: node.customer.customer_website
-field_name: customer_website
+id: node.customer.customer_postalcode
+field_name: customer_postalcode
 entity_type: node
 bundle: customer
-label: 'Customer website'
-description: 'Website for the company. <b>(Optional)</b>'
-required: false
+label: 'Postal code'
+description: 'Display the postal code for the customer.'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   display_summary: false
-field_type: link
+field_type: integer
