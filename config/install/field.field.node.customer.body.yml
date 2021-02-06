@@ -5,7 +5,7 @@ dependencies:
     - field.storage.node.body
     - node.type.customer
   module:
-    - text
+    - field
 id: node.customer.body
 field_name: body
 entity_type: node
@@ -18,4 +18,4 @@ default_value: { }
 default_value_callback: ''
 settings: 
   display_summary: true
-field_type: text_with_summary
+field_type: string

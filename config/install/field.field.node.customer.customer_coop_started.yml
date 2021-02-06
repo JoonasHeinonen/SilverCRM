@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.customer_customername
+    - field.storage.node.customer_coop_started
     - node.type.customer
   module:
     - field
-id: node.customer.customer_customername
-field_name: customer_customername
+id: node.customer.customer_coop_started
+field_name: customer_coop_started
 entity_type: node
 bundle: customer
-label: 'Customer name'
-description: 'Display the name of the customer.'
+label: 'Co-operation started'
+description: 'Date of starting co-operation with the customer.'
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   display_summary: false
-field_type: string
+field_type: datetime

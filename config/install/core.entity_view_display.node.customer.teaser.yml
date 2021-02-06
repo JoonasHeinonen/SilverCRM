@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.customer.body
     - node.type.customer
   module:
-    - text
+    - field
     - user
 id: node.customer.teaser
 targetEntityType: node
@@ -15,7 +15,7 @@ mode: teaser
 content:
   body:
     label: hidden
-    type: text_summary_or_trimmed
+    type: string
     weight: 101
     settings:
       trim_length: 600

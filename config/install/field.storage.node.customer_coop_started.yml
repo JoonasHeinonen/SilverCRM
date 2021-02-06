@@ -4,10 +4,10 @@ dependencies:
   module:
     - node
     - field
-id: node.customer_let
-field_name: customer_let
+id: node.customer_coop_started
+field_name: customer_coop_started
 entity_type: node
-type: string
+type: datetime
 settings: {  }
 module: field
 locked: false

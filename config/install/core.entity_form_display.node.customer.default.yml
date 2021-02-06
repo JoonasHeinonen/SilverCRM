@@ -4,9 +4,11 @@ dependencies:
   config:
     - field.field.node.customer.customer_customername
     - field.field.node.customer.customer_let
+    - field.field.node.customer.customer_coop_started
+    - field.field.node.customer.customer_coop_ended
     - node.type.customer
   module:
-    - text
+    - field
     - user
 id: node.customer.default
 targetEntityType: node
@@ -19,19 +21,27 @@ content:
     settings: { }
     third_party_settings: { }
   customer_customername:
-    weight: 7
+    weight: 6
     settings:
-      rows: 1
-      summary_rows: 1
+      size: 60
       placeholder: ''
-    third_party_settings: { }
-    type: text_textarea_with_summary
+    third_party_settings: {  }
+    type: string_textfield
   customer_let:
-    weight: 7
+    weight: 6
     settings:
-      rows: 1
-      summary_rows: 1
+      size: 60
       placeholder: 'Tmi.'
-    third_party_settings: { }
-    type: text_textarea_with_summary
+    third_party_settings: {  }
+    type: string_textfield
+  customer_coop_started:
+    weight: 7
+    settings: { }
+    third_party_settings: {  }
+    type: datetime_default
+  customer_coop_ended:
+    weight: 7
+    settings: { }
+    third_party_settings: {  }
+    type: datetime_default
 hidden: { }
