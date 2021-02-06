@@ -4,8 +4,10 @@ dependencies:
   config:
     - field.field.node.customer.customer_customername
     - field.field.node.customer.customer_let
+    - field.field.node.customer.customer_customer_localaddress
     - field.field.node.customer.customer_coop_started
     - field.field.node.customer.customer_coop_ended
+    - field.field.node.customer.customer_website
     - node.type.customer
   module:
     - field
@@ -21,7 +23,7 @@ content:
     settings: { }
     third_party_settings: { }
   customer_customername:
-    weight: 6
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -34,14 +36,28 @@ content:
       placeholder: 'Tmi.'
     third_party_settings: {  }
     type: string_textfield
+  customer_customer_localaddress:
+    weight: 8
+    settings:
+      size: 100
+      placeholder: 'Local address'
+    third_party_settings: {  }
+    type: string_textfield
   customer_coop_started:
-    weight: 7
+    weight: 9
     settings: { }
     third_party_settings: {  }
     type: datetime_default
   customer_coop_ended:
-    weight: 7
+    weight: 10
     settings: { }
     third_party_settings: {  }
     type: datetime_default
+  customer_website:
+    weight: 11
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: link
 hidden: { }

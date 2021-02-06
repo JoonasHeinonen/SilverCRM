@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.customer_customername
+    - field.storage.node.customer_website
     - node.type.customer
   module:
     - field
-id: node.customer.customer_customername
-field_name: customer_customername
+id: node.customer.customer_website
+field_name: customer_website
 entity_type: node
 bundle: customer
-label: 'Customer name'
-description: 'Display the name of the customer.'
-required: true
+label: 'Co-operation ended'
+description: 'Website for the company. <b>(Optional)</b>'
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   display_summary: false
-field_type: string
+field_type: link

@@ -11,7 +11,7 @@ field_name: customer_coop_ended
 entity_type: node
 bundle: customer
 label: 'Co-operation ended'
-description: 'Date of ending co-operation with the customer.'
+description: 'Date of ending co-operation with the customer. <br/><b>Only fill this if the co-operation has ended!</b>'
 required: false
 translatable: false
 default_value: {  }

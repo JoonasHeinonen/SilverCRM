@@ -2,16 +2,16 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.customer_customername
+    - field.storage.node.customer_customer_localaddress
     - node.type.customer
   module:
     - field
-id: node.customer.customer_customername
-field_name: customer_customername
+id: node.customer.customer_customer_localaddress
+field_name: customer_customer_localaddress
 entity_type: node
 bundle: customer
-label: 'Customer name'
-description: 'Display the name of the customer.'
+label: 'Local address'
+description: 'Display the address of the customer.'
 required: true
 translatable: false
 default_value: {  }

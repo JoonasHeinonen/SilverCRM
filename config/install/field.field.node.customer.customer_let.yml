@@ -12,7 +12,7 @@ entity_type: node
 bundle: customer
 label: 'Legal entity type'
 description: 'Legal entity type of the customer.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
