@@ -4,15 +4,15 @@ dependencies:
   module:
     - node
     - text
-id: node.let
-field_name: let
+id: node.customer_customername
+field_name: customer_customername
 entity_type: node
-type: text
-settings: { }
+type: text_with_summary
+settings: {  }
 module: text
 locked: false
 cardinality: 1
 translatable: true
-indexes: { }
+indexes: {  }
 persist_with_no_fields: false
 custom_storage: false

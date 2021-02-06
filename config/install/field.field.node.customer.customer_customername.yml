@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.customer_customername
+    - node.type.customer
+  module:
+    - text
+id: node.customer.customer_customername
+field_name: customer_customername
+entity_type: node
+bundle: customer
+label: 'Customer name'
+description: 'Display the name of the customer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary
