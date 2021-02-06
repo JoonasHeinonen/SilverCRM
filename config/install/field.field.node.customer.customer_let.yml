@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.customer_let
+    - node.type.customer
+  module:
+    - text
+id: node.customer.customer_let
+field_name: customer_let
+entity_type: node
+bundle: customer
+label: 'Legal entity type'
+description: 'Legal entity type of the customer.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: text_with_summary

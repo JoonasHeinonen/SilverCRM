@@ -2,7 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.customer_customername
+    - field.field.node.customer.customer_customername
+    - field.field.node.customer.customer_let
     - node.type.customer
   module:
     - text
@@ -14,6 +15,12 @@ mode: default
 content:
   customer_customername:
     weight: 101
+    label: above
+    settings: { }
+    third_party_settings: { }
+    type: text_default
+  customer_let:
+    weight: 103
     label: above
     settings: { }
     third_party_settings: { }
