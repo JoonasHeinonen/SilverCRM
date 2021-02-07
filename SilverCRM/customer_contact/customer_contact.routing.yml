@@ -1,0 +1,7 @@
+customer.customer_contact_form:
+  path: '/submit'
+  defaults:
+    _form: '\Drupal\customer_contact\Form\CustomerContactForm'
+    _title: 'New customer contact'
+  requirements:
+    _permission: 'access content'
