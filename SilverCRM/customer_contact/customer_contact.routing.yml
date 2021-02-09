@@ -1,4 +1,4 @@
-customer.customer_contact_form:
+customer_contact.customer_contact_form:
   path: '/submit'
   defaults:
     _form: '\Drupal\customer_contact\Form\CustomerContactForm'

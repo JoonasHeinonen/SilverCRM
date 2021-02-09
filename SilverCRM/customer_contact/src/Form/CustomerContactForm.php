@@ -42,9 +42,8 @@
             $form['customer_contact']['contact_of_company'] = array(
                 '#type' => 'select',
                 '#title' => t('Contact to the company'),
-                '#options' => array(
-                    'Paskaa Romua Oy' => $this->t('Paskaa Romua Oy'),
-                ),
+                '#options' => $this->get_customers(),
+                '#default_value' => 0,
                 '#required' => TRUE,
             );
 
@@ -83,7 +82,21 @@
         /**
          * Custom functions.
          */
-        private function get_customers() {
-            $query = db_select();
+        public function get_customers() {
+            $query = db_select('node_field_data', 'nfd');
+
+            $query
+                ->fields('nfd', array('title'))
+                ->condition('type', 'customer')
+                ->range(0, 50)
+                ->orderBy('nfd.title', 'DESC');
+
+            $results = $query->execute();
+
+            foreach($results as $result) {
+                $rows[] = $result->title;
+            }
+
+            return $rows;
         }
     }

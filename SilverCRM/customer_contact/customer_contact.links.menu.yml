@@ -1,5 +1,5 @@
-customers.customer_contact_form:
+customer_contact.customer_contact_form:
   title: 'New customer contact'
-  route_name: customer.customer_contact_form
+  route_name: customer_contact.customer_contact_form
   weight: 100
   menu_name: tools
