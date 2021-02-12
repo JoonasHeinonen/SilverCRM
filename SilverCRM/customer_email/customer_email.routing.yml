@@ -1,0 +1,7 @@
+customer_email.customer_email_form:
+  path: '/email_contact'
+  defaults:
+    _form: '\Drupal\customer_email\Form\CustomerEmailForm'
+    _title: 'Contact customer contact'
+  requirements:
+    _permission: 'access content'

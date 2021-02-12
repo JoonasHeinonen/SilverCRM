@@ -1,0 +1,5 @@
+customer_email.customer_email_form:
+  title: 'Contact customer contact'
+  route_name: customer_email.customer_email_form
+  weight: 100
+  menu_name: tools

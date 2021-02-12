@@ -34,6 +34,8 @@
             $node = \Drupal::routeMatch()->getParameter('node');
             $nid  = $node->nid->value;
 
+            $form = array();
+
             $form['customer_contact']['contact_first_name'] = array(
                 '#type' => 'textfield',
                 '#title' => t('Contact First Name'),
@@ -150,3 +152,4 @@
             return $rows;
         }
     }
+?>
