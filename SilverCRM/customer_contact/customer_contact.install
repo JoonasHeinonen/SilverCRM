@@ -1,0 +1,70 @@
+<?php
+    /**
+     * @file
+     * Install, update and uninstall functions for the customer_contact module 
+     */
+    function customer_contact_install() {
+
+    }
+
+    function customer_contact_schema() {
+        $schema['customer_contact'] = array(
+            'description' => 'Stores all the customer contacts to the site\'s database.',
+            'fields' => array(
+                'pid' => array(
+                    'type' => 'serial',
+                    'not null' => TRUE,
+                    'description' => 'Primary Key: Unique customer contact ID.',
+                ),
+                'uid' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Creator user\'s {users}.uid',
+                ),
+                'contact_first_name' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'default' => '',
+                    'description' => 'Customer contact\'s first name.'
+                ),
+                'contact_last_name' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'default' => '',
+                    'description' => 'Customer contact\'s last name.'
+                ),
+                'contact_of_company' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'default' => '',
+                    'description' => 'Customer contact\'s last name.'
+                ),
+                'contact_email' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'default' => '',
+                    'description' => 'Email of the contact.'
+                ),
+                'contact_phonenumber' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Phonenumber of the contact.'
+                ),
+            ),
+            'primary key' => ['pid'],
+            'indexes' => array(
+                'contact_first_name' => array('contact_first_name'),
+                'contact_last_name' => array('contact_last_name'),
+                'contact_phonenumber' => array('contact_phonenumber'),
+            ),
+        );
+
+        return $schema;
+    }
+?>
