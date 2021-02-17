@@ -1,0 +1,7 @@
+customer.create_customer:
+  route_name: 'node.add'
+  route_parameters:
+    node_type: 'customer'
+  title: 'Create Customer'
+  appears_on:
+    - view.search_resources_content.page_1
