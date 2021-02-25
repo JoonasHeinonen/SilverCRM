@@ -8,6 +8,10 @@
     use Drupal\Core\Database\Database;
     use Drupal\Core\Form\FormBase;
     use Drupal\Core\Form\FormStateInterface;
+    use Drupal\Core\Entity\EntityInterface;
+    use Drupal\Core\Mail\MailManagerInterface;
+    use Drupal\Component\Utility\SafeMarkup;
+    use Drupal\Component\Utility\Html;
 
     $customer = 0;
 
@@ -69,7 +73,8 @@
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
             $account = $this->currentUser;
-            
+        
+
             $entry = db_insert('customer_email')
                 ->fields(array(
                     'customer_email_title' => $form_state->getValue('customer_email_title'),
@@ -78,10 +83,60 @@
                     'uid' => 0,
                 ))
                 ->execute();
-
+            
+            $this->send_mail(
+                $form_state->getValue('customer_email_content'), 
+                $form_state->getValue('customer_email_title'),
+                $form_state->getValue('contact_of_company')
+            );
+            
             drupal_set_message(t(
-                'Sent email to the contact successfully!'
+                'Email saved to the system database successfully!'
             ));
+        }
+
+        /**
+         * Implements hook_mail().
+         */
+        function customer_email_mail($key, &$message, $params) {
+            $options = array(
+                'langcode' => $message['langcode'],
+            );
+            switch ($key) {
+                case 'node_insert':
+                    $message['from'] = \Drupal::config('system.site')->get('mail');
+                    $message['subject'] = t('Your mail subject Here: @title', array('@title' => $params['title']), $options);
+                    $message['body'][] = Html::escape($params['message']);
+                    break;
+            }
+        }
+  
+        function send_mail($message, $label, $contact) {
+            $mailManager = \Drupal::service('plugin.manager.mail');
+            $module = 'customer_email';
+            $key = 'node_insert'; // Replace with Your key
+            $params['message'] = $message;
+            $params['title'] = $label;
+            $to = $contact;
+            $langcode = \Drupal::currentUser()->getPreferredLangcode();
+            $send = true;
+          
+            $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+            if ($result['result'] != true) {
+                $message = t('There was a problem sending your email with the following parameters:<br />
+                    <b>Title:</b> \'@title\'<br />
+                    <b>Message:</b> \'@message\'<br />
+                    <b>To:</b> @email.', 
+                    array('@email' => $to, '@title' => $params['title'], '@message' => $params['message'])
+                );
+                drupal_set_message($message, 'error');
+                \Drupal::logger('mail-log')->error($message);
+                return;
+            }
+          
+            $message = t('An email notification has been sent to @email ', array('@email' => $to));
+            drupal_set_message($message);
+            \Drupal::logger('mail-log')->notice($message);
         }
 
         public function get_customer_contact_email($value) {
