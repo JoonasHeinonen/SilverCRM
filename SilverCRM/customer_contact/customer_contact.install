@@ -54,6 +54,7 @@
                 ),
                 'contact_phonenumber' => array(
                     'type' => 'int',
+                    'size' => 'big',
                     'not null' => TRUE,
                     'default' => 0,
                     'description' => 'Phonenumber of the contact.'

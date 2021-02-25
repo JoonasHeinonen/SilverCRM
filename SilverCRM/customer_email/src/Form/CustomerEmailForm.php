@@ -29,7 +29,7 @@
         public function buildForm(array $form, FormStateInterface $form_state) {
             $node = \Drupal::routeMatch()->getParameter('node');
             $nid  = $node->nid->value;
-
+            
             $form = array();
 
             $form['customer_email_form']['customer_email_title'] = array(
