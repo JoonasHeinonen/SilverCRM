@@ -116,8 +116,11 @@
             ));
         }
         
+        // Custom functions.
+        
         /**
-         * Custom functions.
+         * @function
+         * Return customers via plain SQL-query.
          */
         public function get_customers_sql_query() {
             $options = array();
@@ -134,6 +137,10 @@
             return $options;
         }
 
+        /**
+         * @function
+         * Return customers according to Drupal Database API standards.
+         */
         public function get_customers() {
             $query = db_select('node_field_data', 'nfd');
 

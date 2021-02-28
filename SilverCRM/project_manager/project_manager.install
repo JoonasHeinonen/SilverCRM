@@ -1,0 +1,58 @@
+<?php
+    /**
+     * @file
+     * Install, update and uninstall functions for the project_manager module 
+     */
+    function customer_contact_install() {
+        drupal_set_message(t(
+            'Installed <em>Project Manager module</em> successfully!'
+        ));
+    }
+
+    /**
+     * Implements hook_schema().
+     */
+    function project_working_hours_schema() {
+        $schema['project'] = array(
+            'description' => 'Stores all the projects to the site\'s database.',
+            'fields' => array(
+                'pid' => array(
+                    'type' => 'serial',
+                    'not null' => TRUE,
+                    'description' => 'Primary Key: Unique project ID.',
+                ),
+                'uid' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Creator user\'s {users}.uid',
+                ),
+                'project' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'default' => '',
+                    'description' => 'Project worked on.'
+                ),
+                'start_time' => array(
+                    'type' => 'datetime',
+                    'not null' => TRUE,
+                    'description' => 'Starting time and date of the working.'
+                ),
+                'end_time' => array(
+                    'type' => 'datetime',
+                    'not null' => TRUE,
+                    'description' => 'Ending time and date of the working.'
+                ),
+            ),
+            'primary key' => ['pid'],
+            'indexes' => array(
+                'project' => array('project'),
+                'start_time' => array('start_time'),
+                'end_time' => array('end_time'),
+            ),
+        );
+
+        return $schema;
+    }
+?>

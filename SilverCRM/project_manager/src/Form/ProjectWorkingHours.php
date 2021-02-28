@@ -7,10 +7,11 @@
 
     use Drupal\Core\Database\Database;
     use Drupal\Core\Form\FormBase;
+    use Drupal\Core\Form\FormInterface;
     use Drupal\Core\Form\FormStateInterface;
-    use Drupal\Core\Entity\EntityInterface;
 
     class ProjectWorkingHours extends FormBase {
+
         /**
          * (@inheritdoc)
          */
@@ -27,32 +28,47 @@
             
             $form = array();
 
-            $form['working_hours']['start_time'] = array(
-                '#type' => 'datetime',
-                '#title' => t('Work starting time and date.'),
-                '#required' => TRUE,
-            );
-
-            $form['working_hours']['end_time'] = array(
-                '#type' => 'datetime',
-                '#title' => t('Work ending time and date.'),
-                '#required' => TRUE,
-            );
-
-            /*
             $form['working_hours']['project'] = array(
                 '#type' => 'select',
-                '#title' => t('Contact to the company'),
-                '#options' => array_combine($this->get_projects(0), $this->get_projects(1)),
+                '#title' => t('Worked on the project.'),
+                '#required' => TRUE,
+                '#options' => array_combine($this->get_projects(), $this->get_projects()),
                 '#default_value' => 0,
+            );
+
+            $form['working_hours']['time'] = array(
+                '#type' => 'fieldset',
+                '#title' => t('Time and date for work starting and ending.'),
+                '#prefix' => '<div class="myclass">',
+                '#attributes' => array('class' => array('container-inline')), 
                 '#required' => TRUE,
             );
-            */
+
+            $form['working_hours']['time']['start_time'] = array(
+                '#type' => 'datetime',
+                '#required' => TRUE,
+            );
+
+            $form['working_hours']['time']['end_time'] = array(
+                '#type' => 'datetime',
+                '#suffix' => '</div>',
+                '#required' => TRUE,
+            );
+
+            $form['working_hours']['description'] = array(
+                '#type' => 'textarea',
+                '#title' => t('What was worked on the given project. <b>(Max length 200 characters!)</b>'),
+                '#required' => TRUE,
+                '#maxlength' => 200,
+                '#rows' => 2,
+                '#resizable' => 'none',
+            );
 
             $form['working_hours']['submit'] = array(
                 '#type' => 'submit',
                 '#value' => t('Submit'),
             );
+
 
             $form['nid'] = array(
                 '#type' => 'hidden',
@@ -63,56 +79,52 @@
         }
 
         /**
+         * {@inheritdoc}
+         */
+        public function validateForm(array &$form, FormStateInterface $form_state) {
+            if ($form_state->getValue('end_time') <= $form_state->getValue('start_time')) {
+                $form_state->setErrorByName('end_time', $this->t($this->working_hours_error('End time can not be older than start time.')));
+            }
+
+            if ($form_state->getValue('project') == 'No project available...') {
+                $form_state->setErrorByName('project', $this->t($this->working_hours_error('No projects available currently.')));
+            }
+        }
+
+        /**
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
-            drupal_set_message(t(
-                'Working hours saved to the system database successfully!'
-            ));
+            // Empty, initialize when validation works.
         }
+
+        // Custom functions
         
-        public function get_projects($value) {
-            $query = db_select('customer_contact', 'cc');
+        public function get_projects() {
+            $query = db_select('node_field_data', 'nfd');
 
             $query
-                ->fields('cc', array('contact_of_company', 'contact_email'))
+                ->fields('nfd', array('title'))
+                ->condition('type', 'project')
                 ->range(0, 50)
-                ->orderBy('cc.contact_of_company', 'ASC');
-            
+                ->orderBy('nfd.title', 'ASC');
+
             $results = $query->execute();
-            
-            /**
-             * @switch-statement.
-             * 
-             * 0 represents select's value for sending email.
-             * 1 represents select's frontend value.
-             */
-            switch($value) {
-                case 0:
-                    foreach($results as $result) {
-                        $result = $result->contact_email;
-                        $rows[] = $result;
-                    }
-        
-                    if (count($rows) < 1) {
-                        $rows[] = null;
-                    }
-                    break;
-                case 1:
-                    foreach($results as $result) {
-                        $result = '' . $result->contact_of_company . ' - ' . $result->contact_email;
-                        $rows[] = $result;
-                    }
-        
-                    if (count($rows) < 1) {
-                        $rows[] = 'No customer contacts available.';
-                    }
-                    break;
-                default:
-                    break;
+
+            foreach($results as $result) {
+                $rows[] = $result->title;
+            }
+
+            if ($rows == null) {
+                $rows[] = 'No project available...';
             }
 
             return $rows;
+        }
+
+        public function working_hours_error($msg) {
+            $error_msg = 'Working hours unable to save: <b><em>' . $msg . '</b></em>';
+            return $msg;
         }
     }
 ?>

@@ -43,7 +43,7 @@
                     'length' => 255,
                     'not null' => TRUE,
                     'default' => '',
-                    'description' => 'Customer contact\'s last name.'
+                    'description' => 'Contact of the company.'
                 ),
                 'contact_email' => array(
                     'type' => 'varchar',
