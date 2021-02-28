@@ -2,14 +2,32 @@ langcode: en
 status: true
 dependencies:
   module:
-    - node
     - field
+    - node
+    - options
 id: node.customer_let
 field_name: customer_let
 entity_type: node
-type: string
-settings: {  }
-module: field
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Oyj
+      label: Oyj
+    -
+      value: Oy
+      label: Oy
+    -
+      value: Ky
+      label: Ky
+    -
+      value: Ay
+      label: Ay
+    -
+      value: Tmi.
+      label: Tmi.
+  allowed_values_function: ''
+module: options
 locked: false
 cardinality: 1
 translatable: true

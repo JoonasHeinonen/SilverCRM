@@ -11,7 +11,10 @@ dependencies:
     - field.field.node.customer.customer_coop_ended
     - node.type.customer
   module:
+    - datetime
     - field
+    - link
+    - path
     - user
 id: node.customer.default
 targetEntityType: node
@@ -31,12 +34,11 @@ content:
     third_party_settings: {  }
     type: string_textfield
   customer_let:
-    weight: 6
-    settings:
-      size: 60
-      placeholder: 'Tmi.'
+    weight: 120
+    settings: {  }
     third_party_settings: {  }
-    type: string_textfield
+    type: options_select
+    region: content
   customer_postalcode:
     weight: 7
     settings:

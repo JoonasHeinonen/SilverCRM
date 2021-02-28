@@ -1,8 +1,9 @@
 name: Customer Contact Module
 description: 'Create contacts for customer entities in CRM.'
-package: Silver CRM
 
+package: Silver CRM
 type: module
+
 core: 8.x
 core_version_requirement: ^8 || ^9
 

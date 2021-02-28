@@ -18,4 +18,4 @@ default_value: {  }
 default_value_callback: ''
 settings:
   display_summary: false
-field_type: string
+field_type: list_string

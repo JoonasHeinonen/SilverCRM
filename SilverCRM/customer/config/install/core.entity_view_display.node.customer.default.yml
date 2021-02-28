@@ -11,7 +11,10 @@ dependencies:
     - field.field.node.customer.customer_coop_ended
     - node.type.customer
   module:
+    - datetime
     - field
+    - link
+    - options
     - user
 id: node.customer.default
 targetEntityType: node
@@ -27,9 +30,10 @@ content:
   customer_let:
     weight: 103
     label: above
-    settings: { }
-    third_party_settings: { }
-    type: string
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   customer_postalcode:
     weight: 104
     label: above
