@@ -19,6 +19,13 @@
         /**
          * {@inheritdoc}
          */
+        public function getFormId() {
+            return 'project_manager_block';
+        }
+        
+        /**
+         * {@inheritdoc}
+         */
         public function build() {
             $form['active_projects']['submit'] = array(
                 '#type' => 'submit',

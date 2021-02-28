@@ -3,13 +3,13 @@ status: true
 dependencies:
   module:
     - node
-    - field
-id: node.customer_customername
-field_name: customer_customername
+    - text
+id: node.project_description
+field_name: project_description
 entity_type: node
-type: string
+type: text_long
 settings: {  }
-module: field
+module: text
 locked: false
 cardinality: 1
 translatable: true

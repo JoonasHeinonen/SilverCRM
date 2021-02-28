@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.customer.customer_customername
     - field.field.node.customer.customer_let
     - field.field.node.customer.customer_postalcode
     - field.field.node.customer.customer_customer_localaddress
@@ -26,15 +25,8 @@ content:
     weight: 2
     settings: { }
     third_party_settings: { }
-  customer_customername:
-    weight: 5
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
   customer_let:
-    weight: 120
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: options_select

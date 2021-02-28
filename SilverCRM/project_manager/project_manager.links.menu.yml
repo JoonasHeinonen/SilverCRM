@@ -1,0 +1,11 @@
+project_manager.create_project:
+  route_name: 'node.add'
+  route_parameters:
+    node_type: 'project'
+  title: 'Create Project'
+
+project_manager.project_working_hours:
+  title: 'Submit working hours'
+  route_name: project_manager.project_working_hours
+  weight: 100
+  menu_name: tools

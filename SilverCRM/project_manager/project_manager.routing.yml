@@ -1,0 +1,7 @@
+project_manager.project_working_hours:
+  path: '/submit_working_hours'
+  defaults:
+    _form: '\Drupal\project_manager\Form\ProjectWorkingHours'
+    _title: 'Submit working hours'
+  requirements:
+    _permission: 'access content'

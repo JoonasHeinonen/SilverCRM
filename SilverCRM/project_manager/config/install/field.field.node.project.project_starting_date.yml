@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.project_starting_date
+    - node.type.project
+  module:
+    - field
+id: node.project.project_starting_date
+field_name: project_starting_date
+entity_type: node
+bundle: project
+label: 'Project starting date'
+description: 'Starting date of the project.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+field_type: datetime

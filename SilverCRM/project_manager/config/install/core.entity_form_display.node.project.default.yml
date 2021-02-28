@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.project.project_image
+    - field.field.node.project.project_description
+    - field.field.node.project.project_starting_date
+    - node.type.project
+  module:
+    - datetime
+    - field
+    - image
+    - path
+    - text
+    - user
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    settings: { }
+    third_party_settings: { }
+  project_image:
+    weight: 5
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumnbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
+  project_description:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  project_starting_date:
+    weight: 7
+    settings: { }
+    third_party_settings: {  }
+    type: datetime_default
+hidden: { }

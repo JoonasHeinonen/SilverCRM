@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - project_manager
+name: 'Project'
+type: project
+description: 'Content type for ongoing and completed <b>projects</b>  in CRM.'
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: true

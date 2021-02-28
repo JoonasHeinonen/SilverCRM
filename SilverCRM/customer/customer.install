@@ -1,0 +1,24 @@
+<?php
+    /** 
+     * @file 
+     * Install, schema and uninstall funtions for the Customer Module.
+     */
+    
+     /**
+     * Implements hook_install().
+     */
+    function customer_install() {
+        drupal_set_message(t(
+            'Installed <b>Customer Module</b> successfully!'
+        ));
+    }
+
+    /**
+     * Implements hook_uninstall().
+     */
+    function customer_uninstall() {
+        drupal_set_message(t(
+            'Uninstalled <b>Customer Module</b> from the system successfully!'
+        ));
+    }
+?>
