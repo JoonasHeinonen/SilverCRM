@@ -3,17 +3,30 @@
      * @file
      * Install, update and uninstall functions for the project_manager module 
      */
-    function customer_contact_install() {
+
+    /**
+     * Implements hook_install().
+     */
+    function project_manager_install() {
         drupal_set_message(t(
-            'Installed <em>Project Manager module</em> successfully!'
+            'Installed <b>Project Manager module</b> successfully!'
+        ));
+    }
+
+    /**
+     * Implements hook_uninstall().
+     */
+    function project_manager_uninstall() {
+        drupal_set_message(t(
+            'Uninstalled <b>Project Manager module</b> from the system successfully!'
         ));
     }
 
     /**
      * Implements hook_schema().
      */
-    function project_working_hours_schema() {
-        $schema['project'] = array(
+    function project_manager_schema() {
+        $schema['project_working_hours'] = array(
             'description' => 'Stores all the projects to the site\'s database.',
             'fields' => array(
                 'pid' => array(
@@ -35,21 +48,29 @@
                     'description' => 'Project worked on.'
                 ),
                 'start_time' => array(
-                    'type' => 'datetime',
+                    'type' => 'varchar',
+                    'length' => 255,
                     'not null' => TRUE,
                     'description' => 'Starting time and date of the working.'
                 ),
                 'end_time' => array(
-                    'type' => 'datetime',
+                    'type' => 'varchar',
+                    'length' => 255,
                     'not null' => TRUE,
                     'description' => 'Ending time and date of the working.'
                 ),
+                'description' => array(
+                    'type' => 'text',
+                    'not null' => TRUE,
+                    'description' => 'Detailed description on what was worked to the project.'
+                )
             ),
             'primary key' => ['pid'],
             'indexes' => array(
                 'project' => array('project'),
                 'start_time' => array('start_time'),
                 'end_time' => array('end_time'),
+                'description' => array('description'),
             ),
         );
 

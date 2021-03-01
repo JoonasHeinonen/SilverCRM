@@ -25,7 +25,7 @@
         public function buildForm(array $form, FormStateInterface $form_state) {
             $node = \Drupal::routeMatch()->getParameter('node');
             $nid  = $node->nid->value;
-            
+
             $form = array();
 
             $form['working_hours']['project'] = array(
@@ -38,10 +38,10 @@
 
             $form['working_hours']['time'] = array(
                 '#type' => 'fieldset',
-                '#title' => t('Time and date for work starting and ending.'),
+                '#title' => t('<b>Time and date for work starting and ending.</b>'),
+                '#required' => TRUE,
                 '#prefix' => '<div class="myclass">',
                 '#attributes' => array('class' => array('container-inline')), 
-                '#required' => TRUE,
             );
 
             $form['working_hours']['time']['start_time'] = array(
@@ -51,16 +51,16 @@
 
             $form['working_hours']['time']['end_time'] = array(
                 '#type' => 'datetime',
-                '#suffix' => '</div>',
                 '#required' => TRUE,
+                '#suffix' => '</div></br>',
             );
 
-            $form['working_hours']['description'] = array(
+            $form['working_hours']['time']['description'] = array(
                 '#type' => 'textarea',
                 '#title' => t('What was worked on the given project. <b>(Max length 200 characters!)</b>'),
                 '#required' => TRUE,
-                '#maxlength' => 200,
-                '#rows' => 2,
+                '#maxlength' => 400,
+                '#rows' => 4,
                 '#resizable' => 'none',
             );
 
@@ -95,7 +95,21 @@
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
-            // Empty, initialize when validation works.
+            $account = $this->currentUser;
+            
+            $entry = db_insert('project_working_hours')
+                ->fields(array(
+                    'project' => $form_state->getValue('project'),
+                    'start_time' => $form_state->getValue('start_time'),
+                    'end_time' => $form_state->getValue('end_time'),
+                    'description' => $form_state->getValue('description'),
+                    'uid' => 0,
+                ))
+                ->execute();
+
+            drupal_set_message(t(
+                'Working hours have been saved successfully to the database!'
+            ));
         }
 
         // Custom functions
@@ -121,7 +135,7 @@
 
             return $rows;
         }
-
+        
         public function working_hours_error($msg) {
             $error_msg = 'Working hours unable to save: <b><em>' . $msg . '</b></em>';
             return $msg;

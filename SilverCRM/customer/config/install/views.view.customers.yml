@@ -11,7 +11,7 @@ dependencies:
 id: customers
 label: Customers
 module: views
-description: 'Display all the <em>customers</em> on the system.'
+description: 'Display all the <b>customers</b> on the system.'
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -187,7 +187,7 @@ display:
       menu:
         type: normal
         title: Customers
-        description: 'Display all the <em>customers</em> on the system.'
+        description: 'Display all the <b>customers</b> on the system.'
         expanded: false
         parent: ''
         weight: 10

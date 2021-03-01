@@ -5,3 +5,11 @@ project_manager.project_working_hours:
     _title: 'Submit working hours'
   requirements:
     _permission: 'access content'
+
+project_manager.display_working_hours:
+  path: '/display_working_hours'
+  defaults:
+    _controller: '\Drupal\project_manager\Controller\DisplayHours::showHours'
+    _title: 'Display working hours'
+  requirements:
+    _permission: 'access content'

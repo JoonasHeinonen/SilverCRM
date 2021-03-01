@@ -4,7 +4,7 @@
      * Install, schema and uninstall funtions for the Customer Module.
      */
     
-     /**
+    /**
      * Implements hook_install().
      */
     function customer_install() {

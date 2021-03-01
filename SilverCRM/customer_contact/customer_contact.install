@@ -3,12 +3,19 @@
      * @file
      * Install, update and uninstall functions for the customer_contact module 
      */
+
+    /**
+     * Implements hook_install().
+     */
     function customer_contact_install() {
         drupal_set_message(t(
-            'Installed Customer Contact-module successfully!'
+            'Installed <b>Customer Contact Module</b> successfully!'
         ));
     }
 
+    /**
+     * Implements hook_schema().
+     */
     function customer_contact_schema() {
         $schema['customer_contact'] = array(
             'description' => 'Stores all the customer contacts to the site\'s database.',
