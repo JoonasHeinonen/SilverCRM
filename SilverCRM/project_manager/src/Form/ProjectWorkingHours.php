@@ -28,6 +28,12 @@
 
             $form = array();
 
+            $form['working_hours']['monthly_hours'] = array(
+                '#type' => 'select',
+                '#title' => t('Monthly working hours'),
+                '#options' => array_combine($this->show_hours(), $this->show_hours()),
+            );
+
             $form['working_hours']['project'] = array(
                 '#type' => 'select',
                 '#title' => t('Worked on the project.'),
@@ -44,13 +50,29 @@
                 '#attributes' => array('class' => array('container-inline')), 
             );
 
+            $form['working_hours']['time']['work_date'] = array(
+                '#type' => 'date',
+                '#required' => TRUE,
+            );
+
+
             $form['working_hours']['time']['start_time'] = array(
                 '#type' => 'datetime',
+                '#size' => 20,
+                '#date_date_element' => 'none',
+                '#date_time_element' => 'time',
+                '#date_time_format' => 'H:i',
+                '#default_value' => '00:00',
                 '#required' => TRUE,
             );
 
             $form['working_hours']['time']['end_time'] = array(
                 '#type' => 'datetime',
+                '#size' => 20,
+                '#date_date_element' => 'none',
+                '#date_time_element' => 'time',
+                '#date_time_format' => 'H:i',
+                '#default_value' => '00:00',
                 '#required' => TRUE,
                 '#suffix' => '</div></br>',
             );
@@ -100,8 +122,10 @@
             $entry = db_insert('project_working_hours')
                 ->fields(array(
                     'project' => $form_state->getValue('project'),
+                    'work_date' => $form_state->getValue('work_date'),
                     'start_time' => $form_state->getValue('start_time'),
                     'end_time' => $form_state->getValue('end_time'),
+                    'work_hours' => ($form_state->getValue('end_time') - $form_state->getValue('start_time')),
                     'description' => $form_state->getValue('description'),
                     'uid' => 0,
                 ))
@@ -114,6 +138,12 @@
 
         // Custom functions
         
+        /**
+         * function get_projects().
+         * 
+         * @return array
+         *  Return Table format data.
+         */
         public function get_projects() {
             $query = db_select('node_field_data', 'nfd');
 
@@ -135,7 +165,43 @@
 
             return $rows;
         }
-        
+
+/**
+         * function show_hours().
+         * 
+         * @return string
+         *  Return Table format data.
+         */
+        public function show_hours() {
+            $result = \Drupal::database()->select('project_working_hours', 'pwh')
+                ->fields('pwh', array('pid', 'project', 'start_time', 'end_time', 'description'))
+                ->execute()->fetchAllAssoc('pid');
+
+            // Initialize row-element.
+            $rows = array();
+            foreach($result as $row => $content) {
+                $rows[] = array(
+                    'data' => array(
+                        $content->pid,
+                        $content->project, 
+                        $content->start_time, 
+                        $content->end_time, 
+                        $content->description, 
+                    )
+                );
+            }
+
+            // Initialize header.
+            $header = array('PID', 'Project', 'Starting time', 'Ending time', 'Description');
+            $output = array(
+                '#theme' => 'table',
+                '#header' => $header,
+                '#rows' => $rows
+            );
+
+            return $output;
+        }
+
         public function working_hours_error($msg) {
             $error_msg = 'Working hours unable to save: <b><em>' . $msg . '</b></em>';
             return $msg;

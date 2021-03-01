@@ -47,6 +47,12 @@
                     'default' => '',
                     'description' => 'Project worked on.'
                 ),
+                'work_date' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'description' => 'Date worked on the project.'
+                ),
                 'start_time' => array(
                     'type' => 'varchar',
                     'length' => 255,
@@ -59,6 +65,12 @@
                     'not null' => TRUE,
                     'description' => 'Ending time and date of the working.'
                 ),
+                'work_hours' => array(
+                    'type' => 'varchar',
+                    'length' => 255,
+                    'not null' => TRUE,
+                    'description' => 'Total working hours of a given period.'
+                ),
                 'description' => array(
                     'type' => 'text',
                     'not null' => TRUE,
@@ -70,6 +82,7 @@
                 'project' => array('project'),
                 'start_time' => array('start_time'),
                 'end_time' => array('end_time'),
+                'work_hours' => array('work_hours'),
                 'description' => array('description'),
             ),
         );

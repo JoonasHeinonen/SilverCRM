@@ -20,7 +20,7 @@
          */
         public function showHours() {
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'start_time', 'end_time', 'description'))
+                ->fields('pwh', array('pid', 'project', 'work_date', 'start_time', 'end_time', 'work_hours', 'description'))
                 ->execute()->fetchAllAssoc('pid');
 
             // Initialize row-element.
@@ -30,19 +30,30 @@
                     'data' => array(
                         $content->pid,
                         $content->project, 
+                        $content->work_date,
                         $content->start_time, 
                         $content->end_time, 
+                        $content->work_hours, 
                         $content->description, 
                     )
                 );
             }
 
-            // Initialize header.
-            $header = array('PID', 'Project', 'Starting time', 'Ending time', 'Description');
-            $output = array(
+            // Initialize total sum of working hours in total
+            $hours = 0;
+
+            // Initialize header and output.
+            $header = array('PID', 'Project', 'Date', 'Starting time', 'Ending time', 'Working hours', 'Description');
+            $output = array();
+            
+            $output['total_hours']['hours'] = array(
                 '#theme' => 'table',
                 '#header' => $header,
-                '#rows' => $rows
+                '#rows' => $rows,
+            );
+
+            $output['total_hours']['in_total'] = array(
+                '#markup' => t('<em><b>Total working hours per year: </b></em>' . $hours . ' hrs'),
             );
 
             return $output;
