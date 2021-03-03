@@ -50,29 +50,15 @@
                 '#attributes' => array('class' => array('container-inline')), 
             );
 
-            $form['working_hours']['time']['work_date'] = array(
-                '#type' => 'date',
-                '#required' => TRUE,
-            );
-
-
             $form['working_hours']['time']['start_time'] = array(
                 '#type' => 'datetime',
                 '#size' => 20,
-                '#date_date_element' => 'none',
-                '#date_time_element' => 'time',
-                '#date_time_format' => 'H:i',
-                '#default_value' => '00:00',
                 '#required' => TRUE,
             );
 
             $form['working_hours']['time']['end_time'] = array(
                 '#type' => 'datetime',
                 '#size' => 20,
-                '#date_date_element' => 'none',
-                '#date_time_element' => 'time',
-                '#date_time_format' => 'H:i',
-                '#default_value' => '00:00',
                 '#required' => TRUE,
                 '#suffix' => '</div></br>',
             );
@@ -122,17 +108,16 @@
             $entry = db_insert('project_working_hours')
                 ->fields(array(
                     'project' => $form_state->getValue('project'),
-                    'work_date' => $form_state->getValue('work_date'),
                     'start_time' => $form_state->getValue('start_time'),
                     'end_time' => $form_state->getValue('end_time'),
-                    'work_hours' => ($form_state->getValue('end_time') - $form_state->getValue('start_time')),
+                    'work_hours' => date_diff($form_state->getValue('end_time'), $form_state->getValue('start_time')),
                     'description' => $form_state->getValue('description'),
                     'uid' => 0,
                 ))
                 ->execute();
 
             drupal_set_message(t(
-                'Working hours have been saved successfully to the database!'
+                'Working hours have been saved successfully to the database! <b>(' . $form_state->getValue('start_time') . ' - ' . $form_state->getValue('end_time') . ')</b>'
             ));
         }
 
@@ -166,7 +151,7 @@
             return $rows;
         }
 
-/**
+        /**
          * function show_hours().
          * 
          * @return string

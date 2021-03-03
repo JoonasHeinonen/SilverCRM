@@ -20,7 +20,7 @@
          */
         public function showHours() {
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'work_date', 'start_time', 'end_time', 'work_hours', 'description'))
+                ->fields('pwh', array('pid', 'project', 'start_time', 'end_time', 'work_hours', 'description'))
                 ->execute()->fetchAllAssoc('pid');
 
             // Initialize row-element.
@@ -30,7 +30,6 @@
                     'data' => array(
                         $content->pid,
                         $content->project, 
-                        $content->work_date,
                         $content->start_time, 
                         $content->end_time, 
                         $content->work_hours, 
@@ -43,7 +42,7 @@
             $hours = 0;
 
             // Initialize header and output.
-            $header = array('PID', 'Project', 'Date', 'Starting time', 'Ending time', 'Working hours', 'Description');
+            $header = array('PID', 'Project', 'Starting time', 'Ending time', 'Working hours', 'Description');
             $output = array();
             
             $output['total_hours']['hours'] = array(

@@ -5,6 +5,8 @@ dependencies:
     - field.field.node.project.project_image
     - field.field.node.project.project_description
     - field.field.node.project.project_starting_date
+    - field.field.node.project.project_needed_files
+    - field.field.node.project.project_finished
     - node.type.project
   module:
     - datetime
@@ -34,11 +36,28 @@ content:
     third_party_settings: { }
     type: text_default
   project_starting_date:
-    weight: 103
+    weight: 104
     label: above:
     settings: { }
     third_party_settings: { }
     type: datetime_default
+  project_needed_files:
+    weight: 8
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  project_finished:
+    weight: 107
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   links:
     weight: 100
 hidden: { }

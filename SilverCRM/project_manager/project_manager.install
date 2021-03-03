@@ -47,12 +47,6 @@
                     'default' => '',
                     'description' => 'Project worked on.'
                 ),
-                'work_date' => array(
-                    'type' => 'varchar',
-                    'length' => 255,
-                    'not null' => TRUE,
-                    'description' => 'Date worked on the project.'
-                ),
                 'start_time' => array(
                     'type' => 'varchar',
                     'length' => 255,
