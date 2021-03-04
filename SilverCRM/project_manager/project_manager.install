@@ -47,21 +47,38 @@
                     'default' => '',
                     'description' => 'Project worked on.'
                 ),
-                'start_time' => array(
+                'work_date' => array(
                     'type' => 'varchar',
                     'length' => 255,
                     'not null' => TRUE,
-                    'description' => 'Starting time and date of the working.'
+                    'description' => 'Date worked on the project.'
                 ),
-                'end_time' => array(
-                    'type' => 'varchar',
-                    'length' => 255,
+                'start_hours' => array(
+                    'type' => 'int',
                     'not null' => TRUE,
-                    'description' => 'Ending time and date of the working.'
+                    'default' => 0,
+                    'description' => 'Starting hours of the working.'
+                ),
+                'start_minutes' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Starting minutes of the working.'
+                ),
+                'end_hours' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Ending hours of the working.'
+                ),
+                'end_minutes' => array(
+                    'type' => 'int',
+                    'not null' => TRUE,
+                    'default' => 0,
+                    'description' => 'Ending minutes of the working.'
                 ),
                 'work_hours' => array(
-                    'type' => 'varchar',
-                    'length' => 255,
+                    'type' => 'int',
                     'not null' => TRUE,
                     'description' => 'Total working hours of a given period.'
                 ),
@@ -74,8 +91,10 @@
             'primary key' => ['pid'],
             'indexes' => array(
                 'project' => array('project'),
-                'start_time' => array('start_time'),
-                'end_time' => array('end_time'),
+                'start_hours' => array('start_hours'),
+                'start_minutes' => array('start_minutes'),
+                'end_hours' => array('end_hours'),
+                'end_minutes' => array('end_minutes'),
                 'work_hours' => array('work_hours'),
                 'description' => array('description'),
             ),

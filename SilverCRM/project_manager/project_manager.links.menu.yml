@@ -10,8 +10,14 @@ project_manager.project_working_hours:
   weight: 100
   menu_name: tools
 
+project_manager.export_to_csv:
+  title: 'Export to CSV'
+  route_name: project_manager.export_to_csv
+  weight: 101
+  menu_name: tools
+
 project_manager.display_working_hours:
   title: 'Display working hours'
   route_name: project_manager.display_working_hours
-  weight: 101
+  weight: 102
   menu_name: tools

@@ -6,6 +6,14 @@ project_manager.project_working_hours:
   requirements:
     _permission: 'access content'
 
+project_manager.export_to_csv:
+  path: '/export_to_csv'
+  defaults:
+    _form: '\Drupal\project_manager\Form\ExportToCSV'
+    _title: 'Export to CSV'
+  requirements:
+    _permission: 'access content'
+
 project_manager.display_working_hours:
   path: '/display_working_hours'
   defaults:

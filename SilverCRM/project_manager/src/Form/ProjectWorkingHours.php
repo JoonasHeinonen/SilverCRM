@@ -50,18 +50,53 @@
                 '#attributes' => array('class' => array('container-inline')), 
             );
 
-            $form['working_hours']['time']['start_time'] = array(
-                '#type' => 'datetime',
-                '#size' => 20,
+            $form['working_hours']['time']['work_date'] = array(
+                '#type' => 'date',
                 '#required' => TRUE,
             );
 
-            $form['working_hours']['time']['end_time'] = array(
-                '#type' => 'datetime',
-                '#size' => 20,
+            $form['working_hours']['time']['start_hours'] = array(
+                '#type' => 'number',
+                '#size' => 1,
                 '#required' => TRUE,
+                '#default_value' => 0,
+                '#min' => 0,
+                '#max' => 24,
+            );
+
+            $form['working_hours']['time']['start_minutes'] = array(
+                '#type' => 'number',
+                '#size' => 1,
+                '#required' => TRUE,
+                '#default_value' => 0,
+                '#min' => 0,
+                '#max' => 60,
+                '#prefix' => ':',
+                '#suffix' => ''
+            );
+
+            $form['working_hours']['time']['end_hours'] = array(
+                '#type' => 'number',
+                '#size' => 1,
+                '#required' => TRUE,
+                '#default_value' => 0,
+                '#min' => 0,
+                '#max' => 24,
+                '#prefix' => ' - ',
+                '#suffix' => ''
+            );
+
+            $form['working_hours']['time']['end_minutes'] = array(
+                '#type' => 'number',
+                '#size' => 1,
+                '#required' => TRUE,
+                '#default_value' => 0,
+                '#min' => 0,
+                '#max' => 60,
+                '#prefix' => ':',
                 '#suffix' => '</div></br>',
             );
+
 
             $form['working_hours']['time']['description'] = array(
                 '#type' => 'textarea',
@@ -90,8 +125,8 @@
          * {@inheritdoc}
          */
         public function validateForm(array &$form, FormStateInterface $form_state) {
-            if ($form_state->getValue('end_time') <= $form_state->getValue('start_time')) {
-                $form_state->setErrorByName('end_time', $this->t($this->working_hours_error('End time can not be older than start time.')));
+            if ($form_state->getValue('end_hours') <= $form_state->getValue('start_hours')) {
+                $form_state->setErrorByName('end_hours', $this->t($this->working_hours_error('End time can not be older than start time.')));
             }
 
             if ($form_state->getValue('project') == 'No project available...') {
@@ -108,16 +143,19 @@
             $entry = db_insert('project_working_hours')
                 ->fields(array(
                     'project' => $form_state->getValue('project'),
-                    'start_time' => $form_state->getValue('start_time'),
-                    'end_time' => $form_state->getValue('end_time'),
-                    'work_hours' => date_diff($form_state->getValue('end_time'), $form_state->getValue('start_time')),
+                    'work_date' => $form_state->getValue('work_date'),
+                    'start_hours' => $form_state->getValue('start_hours'),
+                    'end_minutes' => $form_state->getValue('end_minutes'),
+                    'end_hours' => $form_state->getValue('end_hours'),
+                    'end_minutes' => $form_state->getValue('end_minutes'),
+                    'work_hours' => date_diff($form_state->getValue('end_hours'), $form_state->getValue('start_hours')),
                     'description' => $form_state->getValue('description'),
                     'uid' => 0,
                 ))
                 ->execute();
 
             drupal_set_message(t(
-                'Working hours have been saved successfully to the database! <b>(' . $form_state->getValue('start_time') . ' - ' . $form_state->getValue('end_time') . ')</b>'
+                'Working hours have been saved successfully to the database! <b>(' . $form_state->getValue('start_hours') . ' - ' . $form_state->getValue('end_hours') . ')</b>'
             ));
         }
 
@@ -159,7 +197,7 @@
          */
         public function show_hours() {
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'start_time', 'end_time', 'description'))
+                ->fields('pwh', array('pid', 'project', 'start_hours', 'end_hours', 'description'))
                 ->execute()->fetchAllAssoc('pid');
 
             // Initialize row-element.
@@ -169,8 +207,8 @@
                     'data' => array(
                         $content->pid,
                         $content->project, 
-                        $content->start_time, 
-                        $content->end_time, 
+                        $content->start_hours, 
+                        $content->end_hours, 
                         $content->description, 
                     )
                 );
