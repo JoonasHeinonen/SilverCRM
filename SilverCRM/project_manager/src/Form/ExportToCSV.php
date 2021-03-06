@@ -39,8 +39,13 @@
                 '#markup' => t('<br/><p>This tool is used in <b>Project Manager Module</b> for CSV-export. Use this <b>feature</b> to export your working hours to a <em><b>CSV-file.</b></em></p>'),
             );
 
+            $form['export_to_csv']['div']['file_name'] = array(
+                '#prefix' => t('<p><em><ul><li>working_hours.csv'),
+                '#suffix' => $this->t('</li></em></p>'),
+            );
+
             $form['export_to_csv']['div']['download'] = array(
-                '#prefix' => $this->t('<a href="working_hours.csv" download="working_hours.csv"><em><b>Click here to download the CSV-file.</b></em>'),
+                '#prefix' => $this->t('<a href="working_hours.csv" download="working_hours.csv"><b><em>Click here to download the CSV-file.</em></b>'),
                 '#suffix' => $this->t('</a><br/>'),
             );
 
@@ -57,15 +62,36 @@
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
-            $csv_output = array (
-                array('Project', 'Starting time', 'Ending time', 'Working hours', 'Description'),
-                array('Silver CRM', '08:00', '16:00', '8', 'Lorem ipsum dolor sit amet...'),
-            );
-            
             $f_open = fopen('working_hours.csv', 'w');
+
+            $result = \Drupal::database()->select('project_working_hours', 'pwh')
+                ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'end_hours', 'work_hours', 'description'))
+                ->execute()->fetchAllAssoc('pid');            
+
+            // Initialize row-element.
+            $rows = array();
+            foreach($result as $row => $content) {
+                $rows[] = array(
+                    $content->pid,
+                    $content->project, 
+                    $content->work_date, 
+                    $content->start_hours, 
+                    $content->end_hours, 
+                    $content->work_hours, 
+                    $content->description, 
+                );
+            }
             
-            foreach ($csv_output as $fields) {
-                fputcsv($f_open, $fields);
+            foreach ($rows as $result) {
+                fputcsv($f_open, $rows[] = array(
+                    $result->pid,
+                    $result->project, 
+                    $result->work_date, 
+                    $result->start_hours, 
+                    $result->end_hours, 
+                    $result->work_hours, 
+                    $result->description,
+                ));
             }
             
             fclose($fp);
