@@ -50,6 +50,7 @@
                 'work_date' => array(
                     'type' => 'varchar',
                     'length' => 255,
+                    'default' => date('Y-d-m'),
                     'not null' => TRUE,
                     'description' => 'Date worked on the project.'
                 ),

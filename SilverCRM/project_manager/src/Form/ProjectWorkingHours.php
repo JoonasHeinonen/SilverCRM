@@ -52,6 +52,7 @@
 
             $form['working_hours']['time']['work_date'] = array(
                 '#type' => 'date',
+                '#default_value' => date('Y-m-d'),
                 '#required' => TRUE,
             );
 
@@ -145,17 +146,17 @@
                     'project' => $form_state->getValue('project'),
                     'work_date' => $form_state->getValue('work_date'),
                     'start_hours' => $form_state->getValue('start_hours'),
-                    'end_minutes' => $form_state->getValue('end_minutes'),
+                    'start_minutes' => $form_state->getValue('start_minutes'),
                     'end_hours' => $form_state->getValue('end_hours'),
                     'end_minutes' => $form_state->getValue('end_minutes'),
-                    'work_hours' => date_diff($form_state->getValue('end_hours'), $form_state->getValue('start_hours')),
+                    'work_hours' => ($form_state->getValue('end_hours') - $form_state->getValue('start_hours')),
                     'description' => $form_state->getValue('description'),
                     'uid' => 0,
                 ))
                 ->execute();
 
             drupal_set_message(t(
-                'Working hours have been saved successfully to the database! <b>(' . $form_state->getValue('start_hours') . ' - ' . $form_state->getValue('end_hours') . ')</b>'
+                'Working hours have been saved successfully to the database! <b>(' . $form_state->getValue('start_hours') . ':' . $form_state->getValue('start_minutes') . ' - ' . $form_state->getValue('end_hours') . ':' . $form_state->getValue('end_minutes') . ')</b>'
             ));
         }
 
