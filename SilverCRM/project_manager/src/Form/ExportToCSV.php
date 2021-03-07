@@ -8,6 +8,7 @@
     use Drupal\Core\Form\FormBase;
     use Drupal\Core\Form\FormInterface;
     use Drupal\Core\Form\FormStateInterface;
+    use Drupal\Core\Session\AccountProxyInterface;
 
     class ExportToCSV extends FormBase {
 
@@ -27,6 +28,9 @@
 
             $form = array();
 
+            $name_cleaned = $this->get_clean_name();
+            $csv_filename = $this->get_file_name();
+
             $form['export_to_csv']['div'] = array(
                 '#type' => 'fieldset',
                 '#title' => t('<b>Export to CSV</b>'),
@@ -40,12 +44,12 @@
             );
 
             $form['export_to_csv']['div']['file_name'] = array(
-                '#prefix' => t('<p><em><ul><li>working_hours.csv'),
+                '#prefix' => t('<p><em><ul><li>' . $csv_filename . '.csv'),
                 '#suffix' => $this->t('</li></em></p>'),
             );
 
             $form['export_to_csv']['div']['download'] = array(
-                '#prefix' => $this->t('<a href="working_hours.csv" download="working_hours.csv"><b><em>Click here to download the CSV-file.</em></b>'),
+                '#prefix' => $this->t('<a href="'. $csv_filename . '.csv" download="'. $csv_filename . '.csv"><b><em>Click here to download the CSV-file.</em></b>'),
                 '#suffix' => $this->t('</a><br/>'),
             );
 
@@ -62,7 +66,11 @@
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
-            $f_open = fopen('working_hours.csv', 'w');
+            $name_cleaned = $this->get_clean_name();
+            $csv_filename = $this->get_file_name();
+
+            $f_open = fopen($csv_filename . '.csv', 'w');
+            $name_cleaned = $this->get_clean_name();
 
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
                 ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'end_hours', 'work_hours', 'description'))
@@ -71,34 +79,42 @@
             // Initialize row-element.
             $rows = array();
             foreach($result as $row => $content) {
-                $rows[] = array(
+                fputcsv($f_open, $rows[] = array(
                     $content->pid,
                     $content->project, 
                     $content->work_date, 
                     $content->start_hours, 
                     $content->end_hours, 
                     $content->work_hours, 
-                    $content->description, 
-                );
-            }
-            
-            foreach ($rows as $result) {
-                fputcsv($f_open, $rows[] = array(
-                    $result->pid,
-                    $result->project, 
-                    $result->work_date, 
-                    $result->start_hours, 
-                    $result->end_hours, 
-                    $result->work_hours, 
-                    $result->description,
+                    $content->description,
                 ));
             }
             
             fclose($fp);
 
             drupal_set_message(t(
-                'Exported working hours to <em><b>CSV-file</b></em> successfully!'
+                $name_cleaned . ': Exported working hours to <em><b>CSV-file</b></em> successfully!'
             ));
+        }
+
+        // Other functions
+
+        public function get_clean_name() {
+            $user = \Drupal::currentUser();
+            $user_id = $user->id();
+
+            $account = \Drupal\user\Entity\User::load($user_id); // pass your uid
+            $name = $account->getUsername();
+            $name_cleaned = preg_replace('/[^a-zA-Z0-9\']/', '_', $name);
+
+            return $name_cleaned;
+        }
+
+        public function get_file_name() {
+            $name_cleaned = $this->get_clean_name();
+            $csv_filename = $name_cleaned . '_working_hours';
+
+            return $csv_filename;
         }
     }
 ?>
