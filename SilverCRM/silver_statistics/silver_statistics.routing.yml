@@ -1,0 +1,7 @@
+silver_statistics.total_statistics:
+  path: '/total_statistics'
+  defaults:
+    _form: '\Drupal\silver_statistics\Form\TotalStatistics'
+    _title: 'Total Statistics'
+  requirements:
+    _permission: 'access content'

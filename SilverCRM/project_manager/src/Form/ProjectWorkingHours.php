@@ -24,15 +24,13 @@
          */
         public function buildForm(array $form, FormStateInterface $form_state) {
             $node = \Drupal::routeMatch()->getParameter('node');
-            $nid  = $node->nid->value;
+            $nid = null;
+
+            if ($node instanceof \Drupal\node\NodeInterface) {
+                $nid = $node->id();
+            }
 
             $form = array();
-
-            $form['working_hours']['monthly_hours'] = array(
-                '#type' => 'select',
-                '#title' => t('Monthly working hours'),
-                '#options' => array_combine($this->show_hours(), $this->show_hours()),
-            );
 
             $form['working_hours']['project'] = array(
                 '#type' => 'select',

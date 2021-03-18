@@ -23,6 +23,7 @@
                 ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'start_minutes', 'end_hours','end_minutes', 'work_hours', 'work_minutes', 'description'))
                 ->execute()->fetchAllAssoc('pid');
             $work_hours = 0;
+            $work_minutes = 0;
 
             // Initialize row-element.
             $rows = array();
@@ -57,6 +58,7 @@
             
             $output['total_hours']['hours'] = array(
                 '#theme' => 'table',
+                '#classname' => 'hour_table',
                 '#header' => $header,
                 '#rows' => $rows,
             );

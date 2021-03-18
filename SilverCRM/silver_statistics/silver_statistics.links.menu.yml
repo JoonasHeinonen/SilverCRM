@@ -1,0 +1,5 @@
+silver_statistics.total_statistics:
+  title: 'Statistics'
+  route_name: silver_statistics.total_statistics
+  weight: 100
+  menu_name: tools
