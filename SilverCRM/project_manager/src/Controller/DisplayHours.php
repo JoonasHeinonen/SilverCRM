@@ -20,7 +20,7 @@
          */
         public function showHours() {
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'end_hours', 'work_hours', 'description'))
+                ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'start_minutes', 'end_hours','end_minutes', 'work_hours', 'work_minutes', 'description'))
                 ->execute()->fetchAllAssoc('pid');
             $work_hours = 0;
 
@@ -33,17 +33,26 @@
                         $content->project, 
                         $content->work_date, 
                         $content->start_hours, 
+                        $content->start_minutes, 
                         $content->end_hours, 
+                        $content->end_minutes, 
                         $content->work_hours, 
+                        $content->work_minutes, 
                         $content->description, 
                     )
                 );
 
                 $work_hours = $work_hours + ($content->work_hours);
+                $work_minutes = $work_minutes + ($content->work_minutes);
+
+                if ($work_minutes > 60) {
+                    $work_hours +=+ 1;
+                    $work_minutes -= 60;
+                }
             }
 
             // Initialize header and output.
-            $header = array('PID', 'Project', 'Date of work', 'Starting time', 'Ending time', 'Working hours', 'Description');
+            $header = array('PID', 'Project', 'Date of work', 'Starting hour', 'Starting minute', 'Ending hour', 'Ending minute', 'Working hours', 'Working minutes', 'Description');
             $output = array();
             
             $output['total_hours']['hours'] = array(
@@ -53,7 +62,7 @@
             );
 
             $output['total_hours']['in_total'] = array(
-                '#markup' => t('<b>Total working hours per year: </b><em>' . $work_hours . '</em> hrs<br/>'),
+                '#markup' => t('<b>Total working hours per year: </b><em>' . $work_hours . '</em> hrs, </b><em>' . $work_minutes . '</em> minutes <br/>'),
             );
 
             return $output;

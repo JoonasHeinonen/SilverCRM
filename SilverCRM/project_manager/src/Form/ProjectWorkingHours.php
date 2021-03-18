@@ -126,11 +126,11 @@
          * {@inheritdoc}
          */
         public function validateForm(array &$form, FormStateInterface $form_state) {
-            if ($form_state->getValue('end_hours') <= $form_state->getValue('start_hours')) {
+            if ($form_state->getValue('end_hours') < $form_state->getValue('start_hours')) {
                 $form_state->setErrorByName('end_hours', $this->t($this->working_hours_error('End time can not be older than start time.')));
             }
 
-            if ($form_state->getValue('project') == 'No project available...') {
+            if ($form_state->getValue('project') === 'No project available...') {
                 $form_state->setErrorByName('project', $this->t($this->working_hours_error('No projects available currently.')));
             }
         }
@@ -149,7 +149,20 @@
                     'start_minutes' => $form_state->getValue('start_minutes'),
                     'end_hours' => $form_state->getValue('end_hours'),
                     'end_minutes' => $form_state->getValue('end_minutes'),
-                    'work_hours' => ($form_state->getValue('end_hours') - $form_state->getValue('start_hours')),
+                    'work_hours' => $this->format_working_time(
+                        'hour', 
+                        $form_state->getValue('start_hours'),
+                        $form_state->getValue('start_minutes'),
+                        $form_state->getValue('end_hours'),
+                        $form_state->getValue('end_minutes'),
+                    ),
+                    'work_minutes' => $this->format_working_time(
+                        'minute', 
+                        $form_state->getValue('start_hours'),
+                        $form_state->getValue('start_minutes'),
+                        $form_state->getValue('end_hours'),
+                        $form_state->getValue('end_minutes'),
+                    ),
                     'description' => $form_state->getValue('description'),
                     'uid' => 0,
                 ))
@@ -183,11 +196,64 @@
                 $rows[] = $result->title;
             }
 
-            if ($rows == null) {
+            if ($rows === null) {
                 $rows[] = 'No project available...';
             }
 
             return $rows;
+        }
+
+        /**
+         * function format_working_time().
+         * 
+         * @return integer
+         *  Return Table format data.
+         */
+        function format_working_time($type, $start_hour, $start_minute, $end_hour, $end_minute) {
+            $hours = $end_hour - $start_hour;
+            $total_minutes = $start_minute + $end_minute;
+
+            /**
+             * @switch-statement.
+             * 
+             * Use 'hour' when the hours are to be manipulated.
+             * Use 'minute' when the minutes are to be manipulated.
+             */
+            switch($type) {
+                case 'hour':
+                    if ($start_minute > 0 && $start_hour == $end_hour) {
+                        $hours = $hours - 1;
+                    }
+
+                    if ($total_minutes < 60 && $hours > 0) {
+                        $hours = $hours - 1;
+                    }
+
+                    if ($start_minute > 30 && $end_minute < 30) {
+                        $hours = $hours - 1;
+                    }
+
+                    return $hours;
+                    break;
+                case 'minute':
+                    if ($end_hour > $start_hour && $start_minute > 0) {
+                        $total_minutes = (60 - $start_minute) + $end_minute;
+                        if ($total_minutes >= 60) {
+                            $total_minutes -= 60;
+                        }
+                        return $total_minutes;
+                    } else if ($start_hour === $end_hour) {
+                        $total_minutes_mere = $end_minute - $start_minute;
+
+                        return $total_minutes_mere;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+
+            return 0;
         }
 
         /**

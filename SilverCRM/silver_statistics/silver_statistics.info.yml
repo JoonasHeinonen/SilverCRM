@@ -1,0 +1,16 @@
+name: Silver CRM statistics
+description: 'Display statistics of all the data in Silver CRM.'
+
+package: Silver CRM
+type: module 
+
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+dependencies:
+  - block
+  - node
+  - silvercrm:customer
+  - silvercrm:customer_contact
+  - silvercrm:customer_email
+  - silvercrm:project_manager
