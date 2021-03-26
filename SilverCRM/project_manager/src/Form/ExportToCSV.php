@@ -66,6 +66,9 @@
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
+            $user = \Drupal::currentUser();
+            $user_id = $user->id();
+
             $name_cleaned = $this->get_clean_name();
             $csv_filename = $this->get_file_name();
 
@@ -73,18 +76,21 @@
             $name_cleaned = $this->get_clean_name();
 
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'end_hours', 'work_hours', 'description'))
-                ->execute()->fetchAllAssoc('pid');            
+                ->fields('pwh', array('uid', 'project', 'work_date', 'start_hours', 'start_minutes', 'end_hours', 'end_minutes', 'work_hours', 'description'))
+                ->condition('uid', $user_id)
+                ->execute()->fetchAllAssoc('uid');            
 
             // Initialize row-element.
             $rows = array();
             foreach($result as $row => $content) {
                 fputcsv($f_open, $rows[] = array(
-                    $content->pid,
+                    $content->uid,
                     $content->project, 
                     $content->work_date, 
                     $content->start_hours, 
+                    $content->start_minutes, 
                     $content->end_hours, 
+                    $content->end_minutes, 
                     $content->work_hours, 
                     $content->description,
                 ));

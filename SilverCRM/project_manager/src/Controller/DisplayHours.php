@@ -19,18 +19,25 @@
          *  Return Table format data.
          */
         public function showHours() {
+            $user = \Drupal::currentUser();
+            $user_id = $user->id();
+
             $result = \Drupal::database()->select('project_working_hours', 'pwh')
-                ->fields('pwh', array('pid', 'project', 'work_date', 'start_hours', 'start_minutes', 'end_hours','end_minutes', 'work_hours', 'work_minutes', 'description'))
-                ->execute()->fetchAllAssoc('pid');
+                ->fields('pwh', array('uid', 'project', 'work_date', 'start_hours', 'start_minutes', 'end_hours','end_minutes', 'work_hours', 'work_minutes', 'description'))
+                ->condition('uid', $user_id)
+                ->execute()->fetchAllAssoc('uid');
+
             $work_hours = 0;
             $work_minutes = 0;
+
+            drupal_set_message(t("Current logged in user: " . $user_id));
 
             // Initialize row-element.
             $rows = array();
             foreach($result as $row => $content) {
                 $rows[] = array(
                     'data' => array(
-                        $content->pid,
+                        $content->uid,
                         $content->project, 
                         $content->work_date, 
                         $content->start_hours, 
@@ -53,7 +60,7 @@
             }
 
             // Initialize header and output.
-            $header = array('PID', 'Project', 'Date of work', 'Starting hour', 'Starting minute', 'Ending hour', 'Ending minute', 'Working hours', 'Working minutes', 'Description');
+            $header = array('UID', 'Project', 'Date of work', 'Starting hour', 'Starting minute', 'Ending hour', 'Ending minute', 'Working hours', 'Working minutes', 'Description');
             $output = array();
             
             $output['total_hours']['hours'] = array(

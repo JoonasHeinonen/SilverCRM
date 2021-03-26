@@ -137,7 +137,8 @@
          * (@inheritdoc)
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
-            $account = $this->currentUser;
+            $user = \Drupal::currentUser();
+            $user_id = $user->id();
             
             $entry = db_insert('project_working_hours')
                 ->fields(array(
@@ -162,7 +163,7 @@
                         $form_state->getValue('end_minutes'),
                     ),
                     'description' => $form_state->getValue('description'),
-                    'uid' => 0,
+                    'uid' => $user_id,
                 ))
                 ->execute();
 
