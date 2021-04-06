@@ -1,0 +1,11 @@
+customer_ticket.customer_ticket_form:
+  title: 'Create new ticket'
+  route_name: customer_ticket.customer_ticket_form
+  weight: 100
+  menu_name: tools
+
+customer_ticket.customer_tickets:
+  title: 'Display tickets'
+  route_name: customer_ticket.customer_tickets
+  weight: 101
+  menu_name: tools

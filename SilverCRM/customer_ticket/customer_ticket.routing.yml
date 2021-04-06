@@ -1,0 +1,15 @@
+customer_ticket.customer_ticket_form:
+  path: '/create_ticket'
+  defaults:
+    _form: '\Drupal\customer_ticket\Form\CustomerTicketForm'
+    _title: 'Create New Ticket'
+  requirements:
+    _permission: 'access content'
+
+customer_ticket.customer_tickets:
+  path: '/display_tickets'
+  defaults:
+    _form: '\Drupal\customer_ticket\Form\DisplayTickets'
+    _title: 'Display All Tickets'
+  requirements:
+    _permission: 'access content'

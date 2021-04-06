@@ -1,9 +1,9 @@
 <?php
     /**
      * @file
-     * Contains \Drupal\customer_email\Form\CustomerEmailForm
+     * Contains \Drupal\customer_ticket\Form\CustomerTicketForm
      */
-    namespace Drupal\customer_email\Form;
+    namespace Drupal\customer_ticket\Form;
 
     use Drupal\Core\Database\Database;
     use Drupal\Core\Form\FormBase;
@@ -13,14 +13,12 @@
     use Drupal\Component\Utility\SafeMarkup;
     use Drupal\Component\Utility\Html;
 
-    $customer = 0;
-
-    class CustomerEmailForm extends FormBase {
+    class CustomerTicketForm extends FormBase {
         /**
          * (@inheritdoc)
          */
         public function getFormId() {
-            return 'customer_customer_email_form';
+            return 'customer_customer_ticket_form';
         }
 
          /**
@@ -28,34 +26,48 @@
          */
         public function buildForm(array $form, FormStateInterface $form_state) {
             $node = \Drupal::routeMatch()->getParameter('node');
-            $nid  = $node->nid->value;
+            $nid = null;
+
+            if ($node instanceof \Drupal\node\NodeInterface) {
+                $nid = $node->id();
+            }
             
             $form = array();
 
-            $form['customer_email_form']['customer_email_title'] = array(
+            $form['customer_ticket_form']['customer_ticket_title'] = array(
                 '#type' => 'textfield',
-                '#title' => t('Email title'),
+                '#title' => t('Ticket title<br/>'),
                 '#size' => 25,
-                '#description' => t('Title of the email message.'),
                 '#required' => TRUE,
             );
 
-            $form['customer_email_form']['customer_email_content'] = array(
+            $form['customer_ticket_form']['customer_ticket_content'] = array(
                 '#type' => 'textarea',
-                '#title' => t('Email message'),
-                '#description' => t('Message of the email message.'),
+                '#title' => t('Ticket message'),
                 '#required' => TRUE,
             );
 
-            $form['customer_email_form']['contact_of_company'] = array(
+            $form['customer_ticket_form']['contact_of_company'] = array(
                 '#type' => 'select',
                 '#title' => t('Contact to the company'),
-                '#options' => array_combine($this->get_customer_contact_email(0), $this->get_customer_contact_email(1)),
+                '#options' => array_combine($this->get_customer_contact_ticket(0), $this->get_customer_contact_ticket(1)),
                 '#default_value' => 0,
                 '#required' => TRUE,
             );
 
-            $form['customer_email_form']['submit'] = array(
+            $form['customer_ticket_form']['customer_ticket_priority'] = array(
+                '#type' => 'select',
+                '#title' => t('Ticket\'s priority level'),
+                '#options' => array(
+                    'low' => t('Low'),
+                    'medium' => t('Medium'),
+                    'high' => t('High'),
+                ),
+                '#default_value' => 'Low',
+                '#required' => TRUE,
+            );
+
+            $form['customer_ticket_form']['submit'] = array(
                 '#type' => 'submit',
                 '#value' => t('Submit'),
             );
@@ -73,32 +85,35 @@
          */
         public function submitForm(array &$form, FormStateInterface $form_state) {
             $account = $this->currentUser;
-        
 
-            $entry = db_insert('customer_email')
+            $entry = db_insert('customer_ticket')
                 ->fields(array(
-                    'customer_email_title' => $form_state->getValue('customer_email_title'),
-                    'customer_email_content' => $form_state->getValue('customer_email_content'),
-                    'customer_email_contact' => $form_state->getValue('contact_of_company'),
+                    'customer_ticket_title' => $form_state->getValue('customer_ticket_title'),
+                    'customer_ticket_content' => $form_state->getValue('customer_ticket_content'),
+                    'customer_ticket_contact' => $form_state->getValue('contact_of_company'),
+                    'customer_ticket_priority' => $form_state->getValue('customer_ticket_priority'),
+                    'customer_ticket_solved' => 'false',
                     'uid' => 0,
                 ))
                 ->execute();
             
             $this->send_mail(
-                $form_state->getValue('customer_email_content'), 
-                $form_state->getValue('customer_email_title'),
-                $form_state->getValue('contact_of_company')
+                $form_state->getValue('customer_ticket_content'), 
+                $form_state->getValue('customer_ticket_title'),
+                $form_state->getValue('contact_of_company'),
+                $form_state->getValue('customer_ticket_priority'),
+                $form_state->getValue('customer_ticket_solved')
             );
             
             drupal_set_message(t(
-                'Email saved to the system database successfully!'
+                'Ticket saved to the system database successfully!'
             ));
         }
 
         /**
          * Implements hook_mail().
          */
-        function customer_email_mail($key, &$message, $params) {
+        function customer_ticket_mail($key, &$message, $params) {
             $options = array(
                 'langcode' => $message['langcode'],
             );
@@ -113,7 +128,7 @@
   
         function send_mail($message, $label, $contact) {
             $mailManager = \Drupal::service('plugin.manager.mail');
-            $module = 'customer_email';
+            $module = 'customer_ticket';
             $key = 'node_insert'; // Replace with Your key
             $params['message'] = $message;
             $params['title'] = $label;
@@ -139,7 +154,7 @@
             \Drupal::logger('mail-log')->notice($message);
         }
 
-        public function get_customer_contact_email($value) {
+        public function get_customer_contact_ticket($value) {
             $query = db_select('customer_contact', 'cc');
 
             $query

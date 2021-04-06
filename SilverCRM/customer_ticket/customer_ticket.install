@@ -3,20 +3,20 @@
      * @file
      * Install, update and uninstall functions for the customer_contact module 
      */
-    function customer_email_install() {
+    function customer_ticket_install() {
         drupal_set_message(t(
             'Installed <b>Customer Email Module</b> successfully!'
         ));
     }
 
-    function customer_email_schema() {
-        $schema['customer_email'] = array(
-            'description' => 'Stores all sent emails to customer contacts into the site\'s database.',
+    function customer_ticket_schema() {
+        $schema['customer_ticket'] = array(
+            'description' => 'Stores all tickets made to customer contacts into the site\'s database.',
             'fields' => array(
                 'pid' => array(
                     'type' => 'serial',
                     'not null' => TRUE,
-                    'description' => 'Primary Key: Unique customer email ID.',
+                    'description' => 'Primary Key: Unique customer ticket ID.',
                 ),
                 'uid' => array(
                     'type' => 'int',
@@ -24,30 +24,42 @@
                     'default' => 0,
                     'description' => 'Sending user\'s {users}.uid',
                 ),
-                'customer_email_title' => array(
+                'customer_ticket_title' => array(
                     'type' => 'varchar',
                     'length' => 255,
                     'not null' => TRUE,
                     'default' => '',
-                    'description' => 'Customer email message\'s title.'
+                    'description' => 'Customer ticket message\'s title.'
                 ),
-                'customer_email_content' => array(
+                'customer_ticket_content' => array(
                     'type' => 'text',
                     'not null' => TRUE,
                     'default' => '',
-                    'description' => 'Customer email\'s content.'
+                    'description' => 'Customer ticket\'s content.'
                 ),
-                'customer_email_contact' => array(
+                'customer_ticket_contact' => array(
                     'type' => 'varchar',
                     'length' => 255,
                     'not null' => TRUE,
                     'default' => '',
                     'description' => 'Customer contact and representative of the company.'
                 ),
+                'customer_ticket_priority' => array(
+                    'type' => 'text',
+                    'not null' => TRUE,
+                    'default' => 'low',
+                    'description' => 'Customer ticket\'s priority level.'
+                ),
+                'customer_ticket_solved' => array(
+                    'type' => 'text',
+                    'not null' => TRUE,
+                    'default' => 'false',
+                    'description' => 'Whether or not the ticket\'s issue is solved.'
+                ),
             ),
             'primary key' => ['pid'],
             'indexes' => array(
-                'customer_email_title' => array('customer_email_title'),
+                'customer_ticket_title' => array('customer_ticket_title'),
             ),
         );
 

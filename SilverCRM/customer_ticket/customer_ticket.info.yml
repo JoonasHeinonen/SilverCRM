@@ -1,5 +1,5 @@
-name: Customer Email Form
-description: 'Initialize form to send email to customer contacts.'
+name: Ticketing module
+description: 'Initialize form to store tickets for customer contacts.'
 
 package: Silver CRM
 type: module 
